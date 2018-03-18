@@ -2,6 +2,7 @@
 
 import cv2
 from imutils.perspective import four_point_transform
+from skimage.measure import compare_ssim as ssim
 import numpy as np
 
 
@@ -38,8 +39,10 @@ def get_sharp_index(image, contour=None):
     sharp_index = 1.0 * edges_pixels_number / area
     return sharp_index
 
+
 def is_clear(image, sharp_index=0.01, contour=None):
     return get_sharp_index(image,contour) > sharp_index
+
 
 def get_max_rectangle_contour(image, unpefect_ratio=0.1, area_ratio=0.02, debug=False):
     '''
@@ -96,11 +99,13 @@ def get_max_rectangle_contour(image, unpefect_ratio=0.1, area_ratio=0.02, debug=
             break
     return screenCnt
 
+
 def get_region_by_contour(image, contour):
     mask = np.zeros(image.shape[0:2], np.uint8)
     # update grayed image with mask, only contour covered region is remain
     cv2.drawContours(mask, [contour], -1, (255), cv2.FILLED)
     return cv2.bitwise_and(image, image, mask=mask)
+
 
 def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     # initialize the dimensions of the image to be resized and
@@ -136,10 +141,12 @@ def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
     # return the resized image
     return resized
 
+
 def get_resized_region_by_contour(image, contour, height=800, width=480):
     region = four_point_transform(image, contour.reshape(4, 2))
     resized_region = resize(region, height=height, width=width)
     return resized_region
+
 
 def get_normalized_3_color_distribution(image):
     # only support resized rectangle image
@@ -151,6 +158,7 @@ def get_normalized_3_color_distribution(image):
     total = (B**2 + G**2 + R**2) ** 0.5
     return (B,G,R)/total
 
+
 def BGR_shift_A_2_B(image_a, image_b):
     '''
     :param image_a: 
@@ -161,5 +169,15 @@ def BGR_shift_A_2_B(image_a, image_b):
     color_dis_b = get_normalized_3_color_distribution(image_b)
     return color_dis_b - color_dis_a
 
-if __name__ == "__main__":
+
+def compare_images_ssim(image_a, image_b):
+    return ssim(image_a, image_b)
+
+
+def get_color_spectrum(image):
+    # return cv2.calcHist(image)
     pass
+
+if __name__ == "__main__":
+    image = cv2.imread("pic/phone_1.jpg")
+    # print get_color_spectrum(image)

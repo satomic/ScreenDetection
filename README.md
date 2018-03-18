@@ -7,6 +7,7 @@
 * basic functions
 	 * `get_sharp_index(image, contour=None)` how sharp of an image, region only is supported
 	 * `get_normalized_3_color_distribution(image)` return tuple with 3 normalized number, refer to Blue/Green/Red
+	 * `get_color_spectrum(image)`
 * cut out contour region from an image
 	* `get_max_rectangle_contour(image, unpefect_ratio=0.1, area_ratio=0.02, debug=False)` 
 	* `get_region_by_contour(image, contour)`
@@ -15,10 +16,11 @@
 * whether the camera is out of focus
     * `is_clear(image, sharp_index=0.01, contour=None)`
 
-* how the colur is shift from image A to B in channel BGR
+* how the colur is shifted from image A to B in channel BGR
 	* `BGR_shift_A_2_B(image_a, image_b)`
 
 * compare two photos, return a similarity index
+	* `compare_images_ssim(image_a, image_b)` this is fucking from `from skimage.measure import compare_ssim`, but this need the two images have the same shape, it's so fucking bad. so we need a more awsome function, judge them by the color spectrum
 
 ---
 
