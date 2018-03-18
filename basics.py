@@ -162,24 +162,4 @@ def BGR_shift_A_2_B(image_a, image_b):
     return color_dis_b - color_dis_a
 
 if __name__ == "__main__":
-    image = cv2.imread("pic/phone_1.jpg")
-    print "original image 3 color:", get_normalized_3_color_distribution(image)
-
-    print "original image sharp:",get_sharp_index(image)
-    cv2.imshow("original image", image)
-
-    cnt = get_max_rectangle_contour(image)
-
-    region = get_region_by_contour(image,cnt)
-    print "region sharp:", get_sharp_index(region)
-    print "region sharp with contour:", get_sharp_index(region,cnt)
-    cv2.imshow("region",region)
-
-    resized_region = get_resized_region_by_contour(image,cnt)
-    print "resized_region 3 color:", get_normalized_3_color_distribution(resized_region)
-    print "resized_region sharp:", get_sharp_index(resized_region)
-    cv2.imshow("resized_region", resized_region)
-
-    print BGR_shift_A_2_B(image, resized_region)
-
-    k = cv2.waitKey(0)
+    pass
