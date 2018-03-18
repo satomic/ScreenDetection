@@ -22,6 +22,12 @@
 
 ---
 
+## realtime demo
+run the example_realtime.py you can get this
+![avatar](https://raw.githubusercontent.com/satomic/ScreenDetection/master/pic/realtime_demo.jpg)
+
+---
+
 ## example
 with original image is below
 ![avatar](https://raw.githubusercontent.com/satomic/ScreenDetection/master/pic/phone_1.jpg)
@@ -42,7 +48,7 @@ if we fill the contour, then we get a mask, by apply the mask to the original im
 
 ---
 
-in real case, we wanna the resized screen of the phone, this can be called "rebuild", by using the function I mentioned upper. we get the resized screen below
+in real case, we wanna the resized screen of the phone, this can be called "rebuild", by using the function I mentioned upper. we get the resized screen below<br/>
 ![avatar](https://raw.githubusercontent.com/satomic/ScreenDetection/master/example/resized_region.jpg)
 * 3 color distribution:  `[ 0.76739759  0.63802456  0.06344758]`, we can easily find that compare to the original image, the B channel shift more, and the R channel is almost disappear
 * resized_region sharp: `0.0228776041667`
