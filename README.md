@@ -24,7 +24,7 @@
 
 ## realtime demo
 run the example_realtime.py you can get this
-![avatar](https://raw.githubusercontent.com/satomic/ScreenDetection/master/pic/realtime_demo.jpg)
+![avatar](https://raw.githubusercontent.com/satomic/ScreenDetection/master/example/realtime_demo.jpg)
 
 ---
 
