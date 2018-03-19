@@ -44,16 +44,21 @@ def is_clear(image, sharp_index=0.01, contour=None):
     return get_sharp_index(image,contour) > sharp_index
 
 
-def get_max_rectangle_contour(image, unpefect_ratio=0.1, area_ratio=0.02, debug=False):
+def get_max_rectangle_contour(image, mode=None, unpefect_ratio=0.1, area_ratio=0.02, debug=False):
     '''
     :param image: 图像，已经读取过的，彩色图像
+    :param mode: 参考基准None表示灰度，0,1,2分别为BGR
     :param unpefect_ratio: 矩形的不完美比率最大
     :param area_ratio: 矩形面积占比整个图像的占比最小
     :param debug: 调试模式
     :return: 包含四个point的list
     '''
-    # 转化为灰度图
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    if mode is None:
+        # 转化为灰度图
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    else:
+        gray = image[:,:,mode]
+        # cv2.imshow("gray",gray)
 
     # 计算当前图像的面积
     total_area = gray.shape[0] * gray.shape[1]
@@ -170,14 +175,18 @@ def BGR_shift_A_2_B(image_a, image_b):
     return color_dis_b - color_dis_a
 
 
-def compare_images_ssim(image_a, image_b):
-    return ssim(image_a, image_b)
+def compare_images_ssim(image_a, image_b, multichannel=True):
+    return ssim(image_a, image_b, multichannel=multichannel)
 
 
-def get_color_spectrum(image):
+def get_grayscale_spectrum(image):
     # return cv2.calcHist(image)
     pass
 
+
 if __name__ == "__main__":
-    image = cv2.imread("pic/phone_1.jpg")
-    # print get_color_spectrum(image)
+    img1 = cv2.imread("pic/phone_1.jpg")
+    img2 = cv2.imread("pic/phone_1_compare.jpg")
+    print compare_images_ssim(img1,img2,multichannel=True)
+
+    k = cv2.waitKey(0)
