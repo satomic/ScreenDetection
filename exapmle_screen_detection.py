@@ -51,7 +51,7 @@ resized_image_5 = get_resized_region_by_contour(image_5, contour, height=595, wi
 
 
 """
-STEP 4: now we have 3 resized images, and all they have a BAD AREA, we can get it!
+STEP 5: now we have 3 resized images, and all they have a BAD AREA, we can get it!
 """
 # get the canny of the 3  resized images
 canny_3 = cv2.Canny(cv2.cvtColor(resized_image_3, cv2.COLOR_BGR2GRAY), 30, 200)
