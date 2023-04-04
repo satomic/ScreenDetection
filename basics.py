@@ -63,7 +63,7 @@ def get_max_rectangle_contour(image, mode=None, unpefect_ratio=0.1, area_ratio=0
     # 计算当前图像的面积
     total_area = gray.shape[0] * gray.shape[1]
     if debug:
-        print "image area:",total_area
+        print("image area:",total_area)
 
     # 双边滤波，该滤波器可以在保证边界清晰的情况下有效的去掉噪声。
     # 它的构造比较复杂，即考虑了图像的空间关系，也考虑图像的灰度关系。
@@ -98,7 +98,7 @@ def get_max_rectangle_contour(image, mode=None, unpefect_ratio=0.1, area_ratio=0
 
         # 经过模糊评估之后，如果用四个点可以近似，则认为是矩形，同时轮廓占比大于图像的一定比率
         if debug:
-            print "current_area:",cv2.contourArea(approx)
+            print("current_area:",cv2.contourArea(approx))
         if len(approx) == 4 and cv2.contourArea(approx) > total_area * area_ratio:
             screenCnt = approx
             break
@@ -187,6 +187,6 @@ def get_grayscale_spectrum(image):
 if __name__ == "__main__":
     img1 = cv2.imread("pic/phone_1.jpg")
     img2 = cv2.imread("pic/phone_1_compare.jpg")
-    print compare_images_ssim(img1,img2,multichannel=True)
+    print(compare_images_ssim(img1,img2,multichannel=True))
 
     k = cv2.waitKey(0)
