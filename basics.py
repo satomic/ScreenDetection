@@ -2,7 +2,8 @@
 
 import cv2
 from imutils.perspective import four_point_transform
-from skimage.measure import compare_ssim as ssim
+# from skimage.measure import compare_ssim as ssim
+from skimage.metrics import structural_similarity as ssim
 import numpy as np
 
 
@@ -44,7 +45,41 @@ def is_clear(image, sharp_index=0.01, contour=None):
     return get_sharp_index(image,contour) > sharp_index
 
 
+import cv2
+
 def get_max_rectangle_contour(image, mode=None, unpefect_ratio=0.1, area_ratio=0.02, debug=False):
+    height, width = image.shape[:2]
+    total_area = height * width
+    if debug:
+        print("image area:", total_area)
+
+    if mode is None:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    else:
+        gray = image[:, :, mode]
+
+    gray = cv2.bilateralFilter(gray, 9, 45, 45)
+    if debug:
+        cv2.imshow("bilateralFiltered", gray)
+
+    edged = cv2.Canny(gray, 30, 200)
+    if debug:
+        cv2.imshow("edged", edged)
+
+    contours, _ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours = sorted(contours, key=cv2.contourArea, reverse=True)[:5]
+    if debug:
+        cv2.drawContours(image, contours, -1, (0, 0, 255), 1)
+
+    for contour in contours:
+        peri = cv2.arcLength(contour, True)
+        approx = cv2.approxPolyDP(contour, unpefect_ratio * peri, True)
+        if len(approx) == 4 and cv2.contourArea(approx) > total_area * area_ratio:
+            return approx
+    return None
+
+
+def _get_max_rectangle_contour(image, mode=None, unpefect_ratio=0.1, area_ratio=0.02, debug=False):
     '''
     :param image: 图像，已经读取过的，彩色图像
     :param mode: 参考基准None表示灰度，0,1,2分别为BGR
@@ -77,7 +112,8 @@ def get_max_rectangle_contour(image, mode=None, unpefect_ratio=0.1, area_ratio=0
         cv2.imshow("edged", edged)
 
     # 从边缘图中找出所有的等高线，找出其中面积最大的5个
-    (img, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    img, cnts = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
     cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:5]
     if debug:
         cv2.drawContours(image, cnts, -1, (0, 0, 255), 1)
